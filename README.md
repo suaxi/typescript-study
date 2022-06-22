@@ -52,3 +52,110 @@ function fn(参数: 类型, 参数: 类型): 类型{
 | tuple   | [4,5]                   | 元素，TS新增类型，定长数组   |
 | enum    | enum{A, B}              | 枚举类型                     |
 
+**number：**
+
+```typescript
+let decimal: number = 6;
+let hex: number = 0xf00d;
+let binary: number = 0b1010;
+let octal: number = 0o744;
+let big: number = 100n;
+```
+
+**boolean：**
+
+```typescript
+let flag: boolean = true;
+```
+
+**string：**
+
+```typescript
+let name: string = '孙笑川';
+let age: number = 33;
+let pepole: string = `我的名字是${name}，今年${age}岁`;
+```
+
+**字面量：**
+
+```typescript
+//可以使用字面量指定变量的类型，通过字面量可以确定变量的取值范围
+let color: 'red' | 'blue' | 'black';
+let age: 10 | 30;
+```
+
+**any：**
+
+```typescript
+let a: any;
+a = 4;
+a = 'hello';
+a= true;
+```
+
+**unknown：**
+
+```typescript
+let notSure: unknown;
+notSure = 'hello';
+notSure = 10;
+```
+
+**void：**
+
+```typescript
+let unusable: void = undefined;
+```
+
+**never：**
+
+```typescript
+function error(message: string): never {
+    throw new Error(message);
+}
+```
+
+**object：**
+
+```typescript
+let obj: object = {}
+```
+
+**array：**
+
+```typescript
+let list: number = [1,2,3];
+let list: Array<number> = [1,2,3];
+```
+
+**tuple：**
+
+```typescript
+let x: [string, string];
+x = ['a','b'];
+```
+
+**enum：**
+
+```typescript
+enum Status: {
+    DONE = 1;
+    UNDO = 0;
+}
+let result = Status.DONE;
+```
+
+**类型断言：**
+
+有时变量的类型对于开发者来说是明确的，但TS编译器却不清楚，此时可以通过类型断言来告诉编译器变量的类型，有以下两种形式：
+
+```typescript
+let value: unknown = '孙笑川';
+let strLength: number = (value as string).length;
+```
+
+```typescript
+let value: unknown = '药水哥';
+let strLength: number = (<string>value).length;
+```
+
