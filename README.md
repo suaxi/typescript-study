@@ -159,3 +159,130 @@ let value: unknown = '药水哥';
 let strLength: number = (<string>value).length;
 ```
 
+
+
+### 三、编译选项
+
+#### 1. 自动编译文件
+
+可以使用`tsc xxx.ts -w`，自动监视文件的变化且在文件发生变化时自动编译
+
+
+
+#### 2. 自动编译整个项目
+
+在配置了 `tsconfig.json` 文件时，使用 `tsc` 命令可以自动编译当前项目下的文件
+
+**配置选项：**
+
+**include：**
+
++ 指定需要编译的文件目录
++ 默认值 `[**/*]` （** 表示任意文件目录，* 表示任意文件）
+
+```json
+"include": [
+    "src/**/*"
+]
+```
+
+**exclude：**
+
++ 需要排除的文件目录
++ 默认值：`["node_modules", "bower_components", "jspm_packages"]`
+
+```json
+"exclude": [
+    "src/test/**/*"
+]
+```
+
+**extends：**
+
++ 定义被继承的配置文件
+
+```json
+"extends": [
+    "./config/base"
+]
+```
+
+**compilerOptions：**
+
+编译选项
+
++ target：指定ts被编译的目标版本
+
+  + 可选值：`'es3', 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'esnext'`
+
+  + 示例
+
+    ```json
+    "compilerOptions": {
+        "target": "ES2015"
+    }
+    ```
+
++ lib：指定项目中要使用的库（宿主环境）
+
+  + 可选值：`'es5', 'es6', 'es2015', 'es7', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022'...`
+
+  + 示例
+
+    ```json
+    "compilerOptions": {
+        "lib": ["es6", "dom"]
+    }
+    ```
+
++ module：指定要使用的模块化的规范
+
+  + 可选值：`'none', 'commonjs', 'amd', 'system', 'umd', 'es6', 'es2015', 'es2020', 'es2022', 'esnext', 'node16', 'nodenext'`
+
+  + 示例
+
+    ```json
+    "compilerOptions": {
+        "module": "ES2015"
+    }
+    ```
+
++ outDir：指定编译后文件的存放目录
+
+  默认情况下，编译后的js文件会和ts文件位于相同的目录，设置outDir可以改变编译后文件的存放位置
+
+  ```json
+  "compilerOptions": {
+      "outDir": "./dist"
+  }
+  ```
+
++ outFilr：将代码合并为一个文件
+
+  将所有的文件编译为一个js，如果 `module` 指定了 `None、System、AMD` 则会将对应模块一起合并到文件中
+
+  ```json
+  "compilerOptions": {
+      "outFile": "./dist/app.js"
+  }
+  ```
+
++ allowJs：是否对js文件进行编译，默认为false
+
++ checkJs：是否检查js代码是否符合语法规范，默认为false
+
++ removeComments：是否移除注释，默认为false
+
++ noEmit：不生成编译后的文件，默认为false
+
++ noEmitOnError：当有错误时不生成编译后的代码，默认为false
+
++ alwaysStrict：设置编译后的文件是否使用严格模式，默认为false
+
++ noImplicitAny：变量未指定类型时，不启用隐式any类型，默认为false（开启）
+
++ noImplicitThis：不允许不明确类型的 this，默认为false（开启）
+
++ strictNullChecks：严格检查空值
+
++ strict：所有严格检查的总开关（值为false时所以检查不生效）
