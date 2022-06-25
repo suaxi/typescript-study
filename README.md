@@ -286,3 +286,160 @@ let strLength: number = (<string>value).length;
 + strictNullChecks：严格检查空值
 
 + strict：所有严格检查的总开关（值为false时所以检查不生效）
+
+
+
+### 四、webpack打包
+
+**基本步骤：**
+
+#### 1. 初始化项目
+
+进入指定目录，执行 `npm init -y` （创建`pacjage.json`文件）
+
+#### 2. 下载构建工具
+
+`npm i -D webpack webpack-cli webpack-dev-server html-webpack-plugin clean-webpack-plugin typescript ts-loader`
+
++ webpack构建工具
++ webpack-cli命令行工具
++ webpack-dev-server 开发工具
++ html-webpack-plugin html插件
++ clean-webpack-plugin 清理插件
++ typescript ts编译器
++ ts-loader ts加载器
+
+#### 3. 根目录下创建webpack配置文件
+
+```js
+const path = require('path');
+//引入html插件
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+module.exports = {
+    //指定入口文件
+    entry: "./src/index.ts",
+    output: {
+        //打包文件所在目录
+        path: path.resolve(__dirname, 'dist'),
+        //打包后的文件名
+        filename: "bundle.js"
+    },
+    mode: 'development',
+    //指定打包时所使用的模块
+    module: {
+        rules: [
+            {
+                //规则生效的文件
+                test: /\.ts$/,
+                //加载器
+                use: 'ts-loader',
+                //要排除的文件
+                exclude: /node_modules/
+            }
+        ]
+    },
+    //配置webpack插件
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HTMLWebpackPlugin({
+            // title: 'webpack打包插件'
+            template: "./src/index.html"
+        }),
+    ],
+
+    //设置需要引用的模块
+    resolve: {
+        extensions: ['.ts', ".js"]
+    }
+}
+```
+
+#### 4. Babel
+
+（1）安装依赖包
+
+`npm i -D @babel/core @babel/preset-env babel-loader core-js`
+
++ @babel/core：babel核心工具
++ @babel/preset-env：babel预定义环境
++ babel-loader：加载器
++ core-js：用于让老版本浏览器支持新版ES语法
+
+（2）修改`webpack.config.js`配置文件
+
+```js
+const path = require('path');
+//引入html插件
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+
+module.exports = {
+    //指定入口文件
+    entry: "./src/index.ts",
+    output: {
+        //打包文件所在目录
+        path: path.resolve(__dirname, 'dist'),
+        //打包后的文件名
+        filename: "bundle.js",
+        environment: {
+            //不使用箭头函数
+            arrowFunction: false
+        }
+    },
+    mode: 'development',
+    //指定打包时所使用的模块
+    module: {
+        rules: [
+            {
+                //规则生效的文件
+                test: /\.ts$/,
+                //加载器（执行顺序为倒序，ts->js->转译）
+                use: [
+                    //配置babel
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            //环境预设置
+                            presets: [
+                                [
+                                    //指定环境的插件
+                                    "@babel/preset-env",
+                                    //配置信息
+                                    {
+                                        //要兼容的目标浏览器
+                                        targets: {
+                                            "chrome": "51",
+                                            "ie": "11"
+                                        },
+                                        "corejs": "3",
+                                        //使用corejs的方式，usage 按需加载
+                                        "useBuiltIns": "usage"
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    'ts-loader'],
+                //要排除的文件
+                exclude: /node_modules/
+            }
+        ]
+    },
+    //配置webpack插件
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HTMLWebpackPlugin({
+            // title: 'webpack打包插件'
+            template: "./src/index.html"
+        }),
+    ],
+
+    //设置需要引用的模块
+    resolve: {
+        extensions: ['.ts', ".js"]
+    }
+}
+```
+
