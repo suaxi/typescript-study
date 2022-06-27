@@ -443,3 +443,168 @@ module.exports = {
 }
 ```
 
+
+
+### 五、面向对象
+
+#### 1. 类
+
+```typescript
+//定义一个类
+/**
+ * 对象中主要包含的两个部分
+ * 属性
+ * 方法
+ */
+class Person {
+
+    //实例属性
+    //readonly只读
+    //readonly name: string = '孙笑川';
+
+    //类属性（静态变量）
+    //static age: number = 33;
+
+    //常规定义方式
+    name = '孙笑川';
+    age = 33;
+
+    //方法
+    sayHello() {
+        console.log('你好，孙笑川');
+    }
+}
+
+const p = new Person();
+console.log(p);
+
+//console.log(Person.age);
+
+p.sayHello();
+```
+
+
+
+#### 2. 构造函数
+
+```typescript
+class Dog {
+    name: string;
+    age: number;
+
+    /**
+     * 构造函数：在对象创建时调用
+     * 在实例方法中，this表示当前的实例
+     */
+    constructor(name: string, age: number) {
+        this.name = name;
+        this.age = age;
+    }
+
+    say() {
+        console.log(this.name + '，汪汪汪');
+    }
+}
+
+const dog1 = new Dog('卡星五', 3);
+console.log(dog1);
+dog1.say();
+
+const dog2 = new Dog('旺财', 4);
+console.log(dog2);
+```
+
+
+
+#### 3. 继承
+
+```typescript
+(function () {
+
+    //动物
+    class Animal {
+        name: string;
+        age: number;
+
+        constructor(name: string, age: number) {
+            this.name = name;
+            this.age = age;
+        }
+
+        say() {
+            console.log(this.name + '，在叫！');
+        }
+    }
+
+    /**
+     * 使用继承后，子类拥有父类所有的属性和方法
+     */
+
+    //狗
+    class Dog extends Animal {
+
+        /**
+         * 子类重写父类的方法
+         */
+        say() {
+            console.log(`${this.name}，汪汪汪`);
+        }
+
+        run() {
+            console.log(`${this.name}，边跑边叫`);
+        }
+    }
+
+    const dog = new Dog('旺财', 2);
+    dog.say();
+    dog.run();
+
+    //猫
+    class Cat extends Animal {
+
+    }
+
+    const cat = new Cat('咪咪', 1);
+    cat.say();
+})();
+```
+
+
+
+#### 4. super关键字
+
+```typescript
+(function () {
+    class Animal {
+        name: string;
+
+        constructor(name: string) {
+            this.name = name;
+        }
+
+        say() {
+            console.log(this.name + '，在叫');
+        }
+    }
+
+    class Dog extends Animal {
+
+        age: number;
+
+        //如果在子类中写了构造函数，必须对父类的构造函数进行调用
+        constructor(name: string, age: number) {
+            super(name);
+            this.age = age;
+        }
+
+        say() {
+            //super表示当前类的父类
+            super.say();
+        }
+    }
+
+    const dog = new Dog('旺财', 2);
+    dog.say();
+})();
+```
+
