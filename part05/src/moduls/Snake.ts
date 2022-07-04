@@ -1,5 +1,3 @@
-import Food from "./Food";
-
 class Snake {
     //头
     head: HTMLElement;
