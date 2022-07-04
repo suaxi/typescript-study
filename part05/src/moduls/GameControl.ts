@@ -59,12 +59,34 @@ class GameControl {
                 X += 10;
                 break;
         }
-        
+
+        //判断蛇是否吃到食物
+        this.checkEat(X, Y)
+
         //修改蛇的位置
-        this.snake.x = X;
-        this.snake.y = Y;
+        try {
+            this.snake.x = X;
+            this.snake.y = Y;
+        } catch (e) {
+            //游戏结束
+            // @ts-ignore
+            alert(e.message)
+            this.isLive = false
+        }
 
         this.isLive && setTimeout(this.run.bind(this), 300 - (this.scorePanel.level - 1) * 30)
+    }
+
+    checkEat(X: number, Y: number) {
+        if (X === this.food.x && Y === this.food.y) {
+            console.log("蛇吃到了食物！")
+            //生成新的食物
+            this.food.change()
+            //增加积分
+            this.scorePanel.addScore()
+            //蛇长度增加
+            this.snake.addBody()
+        }
     }
 }
 
